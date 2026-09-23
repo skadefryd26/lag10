@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { Box, Group, Stack, Text } from "@mantine/core";
 
 type Props = {
@@ -28,57 +28,58 @@ export const Nedtelling: React.FC<Props> = ({ tidGjenstår, totalTid = 20 }) => 
   const erRød = tidGjenstår <= 5;
   const erGul = tidGjenstår > 5 && tidGjenstår <= 10;
 
-  let farge = "#3B8EF0";
-  let bgFarge = "rgba(59, 142, 240, 0.12)";
+  let farge = "#3b82f6";
+  let bgFarge = "rgba(59, 130, 246, 0.2)";
   if (erGul) {
-    farge = "#FFC542";
-    bgFarge = "rgba(255, 197, 66, 0.18)";
+    farge = "#facc15";
+    bgFarge = "rgba(250, 204, 21, 0.2)";
   } else if (erRød) {
-    farge = "#FF4D6D";
-    bgFarge = "rgba(255, 77, 109, 0.18)";
+    farge = "#ef4444";
+    bgFarge = "rgba(239, 68, 68, 0.25)";
   }
 
-  const radius = 22;
+  const radius = 18;
   const omkrets = 2 * Math.PI * radius;
   const framdrift = Math.max(0, Math.min(1, tidGjenstår / totalTid));
   const offset = omkrets * (1 - framdrift);
 
   return (
     <Box
-      p="md"
+      px="sm"
+      py="xs"
       style={{
-        backgroundColor: "#FFFFFF",
-        borderRadius: "24px",
-        border: `2px solid ${farge}44`,
-        boxShadow: erRød ? "0 10px 30px rgba(255, 77, 109, 0.25)" : "0 10px 30px rgba(31, 42, 68, 0.12)",
+        backgroundColor: "rgba(15, 23, 42, 0.8)",
+        borderRadius: "14px",
+        border: `1px solid ${farge}`,
+        boxShadow: erRød ? "0 0 16px rgba(239, 68, 68, 0.4)" : "0 2px 10px rgba(0, 0, 0, 0.3)",
         transition: "all 0.3s ease"
       }}
       className={erRød ? "pulse-red-timer" : undefined}
     >
-      <Group justify="space-between" align="center" wrap="nowrap">
-        <Group gap="md" align="center">
-          <Box style={{ position: "relative", width: "56px", height: "56px" }}>
-            <svg width="56" height="56" viewBox="0 0 60 60">
+      <Group justify="space-between" align="center" wrap="nowrap" gap="xs">
+        <Group gap="xs" align="center" wrap="nowrap">
+          <Box style={{ position: "relative", width: "42px", height: "42px", flexShrink: 0 }}>
+            <svg width="42" height="42" viewBox="0 0 44 44">
               <title>Nedtelling timer</title>
               <circle
-                cx="30"
-                cy="30"
+                cx="22"
+                cy="22"
                 r={radius}
                 fill="none"
-                stroke="#E2E8F0"
-                strokeWidth="5"
+                stroke="rgba(255, 255, 255, 0.1)"
+                strokeWidth="4"
               />
               <circle
-                cx="30"
-                cy="30"
+                cx="22"
+                cy="22"
                 r={radius}
                 fill="none"
                 stroke={farge}
-                strokeWidth="5"
+                strokeWidth="4"
                 strokeDasharray={omkrets}
                 strokeDashoffset={offset}
                 strokeLinecap="round"
-                transform="rotate(-90 30 30)"
+                transform="rotate(-90 22 22)"
                 style={{ transition: "stroke-dashoffset 0.8s linear, stroke 0.3s ease" }}
               />
             </svg>
@@ -94,26 +95,49 @@ export const Nedtelling: React.FC<Props> = ({ tidGjenstår, totalTid = 20 }) => 
                 justifyContent: "center"
               }}
             >
-              <Text fw={800} size="md" style={{ color: farge }}>
+              <Text fw={800} size="xs" style={{ color: farge, fontFamily: "'Space Grotesk', sans-serif" }}>
                 {tidGjenstår}
               </Text>
             </Box>
           </Box>
 
-          <Stack gap={2}>
-            <Text size="xs" fw={800} style={{ color: "#6B7793", letterSpacing: "1px", textTransform: "uppercase" }}>
-              Tid igjen
+          <Stack gap={0} style={{ overflow: "hidden", minWidth: 0 }}>
+            <Text size="xs" fw={800} style={{ color: farge, letterSpacing: "1px", textTransform: "uppercase", fontSize: "0.65rem" }}>
+              NEDTELLING — {tidGjenstår}S
             </Text>
-            <Text size="sm" fw={600} style={{ color: "#1F2A44", fontStyle: "italic" }}>
+            <Text
+              size="xs"
+              fw={600}
+              style={{
+                color: "#e2e8f0",
+                fontStyle: "italic",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                maxWidth: "220px"
+              }}
+            >
               {utålmodigTekst}
             </Text>
           </Stack>
         </Group>
 
-        <Text size="xs" fw={800} style={{ color: farge, backgroundColor: bgFarge, padding: "6px 14px", borderRadius: "20px" }}>
+        <Text
+          size="xs"
+          fw={900}
+          style={{
+            color: farge,
+            backgroundColor: bgFarge,
+            padding: "4px 8px",
+            borderRadius: "8px",
+            fontSize: "0.75rem",
+            fontFamily: "'Space Grotesk', sans-serif"
+          }}
+        >
           {tidGjenstår}s
         </Text>
       </Group>
     </Box>
   );
 };
+
