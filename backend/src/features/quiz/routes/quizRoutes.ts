@@ -1,12 +1,31 @@
 import { Router, Request, Response } from "express";
 import { SPORSMAL_BANK } from "../data/sporsmal.js";
-import { SpørsmålResponse, SvarRequest, SvarResponse } from "../types/quizTypes.js";
+import { SpørsmålDokument, SpørsmålResponse, SvarRequest, SvarResponse } from "../types/quizTypes.js";
 import { beregnNyttTrusselnivå } from "../services/trusselnivaa.js";
 import { genererBjarneKommentar } from "../services/bjarneService.js";
+import { genererHistoriespørsmål } from "../services/historieGenerator.js";
 
 const router = Router();
 
 let tilgjengeligeSpørsmål: string[] = [];
+
+/** Historiespørsmål Bjarne har diktet opp i denne økta, så fasiten finnes når svaret kommer inn. */
+const diktedeSpørsmål = new Map<string, SpørsmålDokument>();
+const MAKS_DIKTEDE_I_MINNE = 200;
+
+function husk(spørsmål: SpørsmålDokument): void {
+  if (diktedeSpørsmål.size >= MAKS_DIKTEDE_I_MINNE) {
+    const eldste = diktedeSpørsmål.keys().next().value;
+    if (eldste) {
+      diktedeSpørsmål.delete(eldste);
+    }
+  }
+  diktedeSpørsmål.set(spørsmål.id, spørsmål);
+}
+
+function finnSpørsmål(id: string): SpørsmålDokument | undefined {
+  return diktedeSpørsmål.get(id) ?? SPORSMAL_BANK.find((s) => s.id === id);
+}
 
 function stokk<T>(liste: readonly T[]): T[] {
   const kopi = [...liste];
@@ -21,21 +40,60 @@ function fyllOgStokkKø(): void {
   tilgjengeligeSpørsmål = stokk(SPORSMAL_BANK.map((s) => s.id));
 }
 
-router.get("/sporsmal", (_req: Request, res: Response) => {
+function nesteBankSpørsmål(): SpørsmålDokument {
   if (tilgjengeligeSpørsmål.length === 0) {
     fyllOgStokkKø();
   }
-
   const nesteId = tilgjengeligeSpørsmål.shift();
-  const spørsmålDokument = SPORSMAL_BANK.find((s) => s.id === nesteId) ?? SPORSMAL_BANK[0];
+  return SPORSMAL_BANK.find((s) => s.id === nesteId) ?? SPORSMAL_BANK[0];
+}
+
+/**
+ * Bjarne dikter i forkant, så spilleren slipper å vente mens han tenker.
+ * Bufferet fylles i bakgrunnen med én gang et spørsmål er hentet ut.
+ */
+const ferdigDiktede: SpørsmålDokument[] = [];
+const BUFFERMÅL = 2;
+let fyllerBuffer = false;
+
+async function fyllBuffer(): Promise<void> {
+  if (fyllerBuffer) return;
+  fyllerBuffer = true;
+  try {
+    while (ferdigDiktede.length < BUFFERMÅL) {
+      const historie = await genererHistoriespørsmål(nesteBankSpørsmål());
+      if (!historie) break;
+      husk(historie);
+      ferdigDiktede.push(historie);
+    }
+  } finally {
+    fyllerBuffer = false;
+  }
+}
+
+router.get("/sporsmal", async (_req: Request, res: Response) => {
+  let spørsmålDokument = ferdigDiktede.shift();
+
+  if (!spørsmålDokument) {
+    // Ingenting ferdig diktet ennå — vent på Bjarne, og fall tilbake til banken hvis han svikter.
+    const bankSpørsmål = nesteBankSpørsmål();
+    const historie = await genererHistoriespørsmål(bankSpørsmål);
+    if (historie) {
+      husk(historie);
+    }
+    spørsmålDokument = historie ?? bankSpørsmål;
+  }
 
   const respons: SpørsmålResponse = {
     id: spørsmålDokument.id,
     tekst: spørsmålDokument.tekst,
+    historie: spørsmålDokument.historie,
     alternativer: stokk(spørsmålDokument.alternativer)
   };
 
   res.json(respons);
+
+  void fyllBuffer();
 });
 
 router.post("/svar", async (req: Request, res: Response) => {
@@ -46,7 +104,7 @@ router.post("/svar", async (req: Request, res: Response) => {
     return;
   }
 
-  const spørsmål = SPORSMAL_BANK.find((s) => s.id === body.spørsmålId);
+  const spørsmål = finnSpørsmål(body.spørsmålId);
   if (!spørsmål) {
     res.status(400).json({ error: `Ukjent spørsmålId: ${body.spørsmålId}` });
     return;

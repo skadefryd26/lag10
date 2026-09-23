@@ -26,7 +26,7 @@ export async function genererSvarFraGateway(payload: AIGatewayPayload): Promise<
   }
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 12000);
+  const timeoutId = setTimeout(() => controller.abort(), 25000);
 
   try {
     const response = await fetch("https://genai.gjensidige.io/openai/v1/responses", {

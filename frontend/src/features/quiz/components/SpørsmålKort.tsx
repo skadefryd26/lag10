@@ -94,6 +94,19 @@ export const SpørsmålKort: React.FC<Props> = ({
             </Group>
           )}
 
+          {spørsmål.historie && (
+            <Text
+              size="md"
+              style={{
+                color: "#3c4a66",
+                lineHeight: 1.65,
+                fontFamily: "'Outfit', sans-serif"
+              }}
+            >
+              {spørsmål.historie}
+            </Text>
+          )}
+
           <Text
             size="xl"
             fw={800}
