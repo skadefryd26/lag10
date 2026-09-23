@@ -130,6 +130,21 @@
   color: #ffe9f3 !important;
 }
 
+/* Barometeret henger også på veggen: helt dekkende, med cyan neonkant. */
+.threat-meter {
+  background: #fffdf8 !important;
+  border: 3px solid var(--neon-cyan) !important;
+  box-shadow:
+    0 0 14px rgba(34, 228, 255, 0.6),
+    0 0 36px rgba(34, 228, 255, 0.3),
+    0 18px 44px rgba(0, 0, 0, 0.6) !important;
+}
+
+.threat-meter-danger {
+  background: #fff1f2 !important;
+  border-color: var(--neon-pink) !important;
+}
+
 @keyframes neonFlicker {
   0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
   20%, 24%, 55% { opacity: 0.45; }
