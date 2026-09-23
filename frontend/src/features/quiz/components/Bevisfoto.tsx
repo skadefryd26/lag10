@@ -14,6 +14,7 @@ export const Bevisfoto: React.FC<Props> = ({ bevisfotoTekst }) => {
     <Box
       p="sm"
       mt="sm"
+      className="bevisfoto-card"
       style={{
         backgroundColor: "#F8FAFC",
         borderRadius: "16px",
