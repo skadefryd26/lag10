@@ -377,3 +377,46 @@
     animation: none !important;
   }
 }
+
+/* Resultatkortet: sorte felt med lys tekst, i stedet for lyse papirfelt. */
+.quiz-main-column .corner-brackets .resultat-tallfelt {
+  background: var(--sort-flate-2) !important;
+  border-color: var(--sort-kant) !important;
+}
+
+.quiz-main-column .corner-brackets .resultat-oppsummering {
+  background: #1a1605 !important;
+  border-color: var(--neon-yellow) !important;
+}
+
+.quiz-main-column .corner-brackets .resultat-oppsummering p:first-child {
+  color: var(--neon-yellow) !important;
+}
+
+/* Merkelapper: mørkere rød bak hvit tekst, og mørk tekst på grønn og gul, så de er lette å lese. */
+.mantine-Badge-root[style*="background-color: rgb(239, 68, 68)"] {
+  background-color: #b91c1c !important;
+}
+.mantine-Badge-root[style*="background-color: rgb(239, 68, 68)"],
+.mantine-Badge-root[style*="background-color: rgb(239, 68, 68)"] span {
+  color: #ffffff !important;
+}
+.mantine-Badge-root[style*="background-color: rgb(34, 197, 94)"],
+.mantine-Badge-root[style*="background-color: rgb(34, 197, 94)"] span,
+.mantine-Badge-root[style*="background-color: rgb(250, 204, 21)"],
+.mantine-Badge-root[style*="background-color: rgb(250, 204, 21)"] span {
+  color: #0a0a0c !important;
+}
+.quiz-main-column .corner-brackets {
+  --line-strong: #3a3a44;
+}
+.quiz-main-column button.svar-alternativ .mantine-Badge-root[style*="background-color: rgb(34, 197, 94)"],
+.quiz-main-column button.svar-alternativ .mantine-Badge-root[style*="background-color: rgb(34, 197, 94)"] span {
+  color: #0a0a0c !important;
+}
+
+/* Gule knapper får mørk tekst. */
+.quiz-main-column .corner-brackets .mantine-Button-root,
+.quiz-main-column .corner-brackets .mantine-Button-root span {
+  color: #0a0a0c !important;
+}
