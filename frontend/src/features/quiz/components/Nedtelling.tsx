@@ -10,8 +10,7 @@ type Props = {
 const BJARNE_UTÅLMODIG_MELDINGER = [
   "Bjarne trommer utålmodig med fingrene på pulten…",
   "Bjarne ser demonstrativt på klokka…",
-  "Bjarne vurderer å hente seg en ny espresso…",
-  "Bjarne sjekker om han rekker mer kaffe…",
+  "Bjarne vurderer å ta en pause…",
   "Bjarne sukker tungt og ruller med øynene…",
   "Bjarne begynner å lure på om du har sovnet…",
   "Bjarne sjekker e-posten sin mens han venter…",

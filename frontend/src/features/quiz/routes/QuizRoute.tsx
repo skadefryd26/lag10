@@ -165,7 +165,7 @@ export const QuizPage: React.FC = () => {
             <Text className="eyebrow">BJARNE LIVE</Text>
             <Title order={1} className="quiz-title">Vilkårsduellen</Title>
             <Text className="quiz-subtitle">Svar før Bjarne rekker å forklare hvorfor han har rett.</Text>
-            <Box className="bjarne-meter-stack" aria-label="Bjarne og kaffebehov">
+            <Box className="bjarne-meter-stack" aria-label="Bjarne og trusselnivået">
               <Group className="bjarne-status-row" align="center" gap="md">
                 <BjarneAvatar tilstand={tilstand} nivå={trusselnivå} />
                 <Group gap="sm" className="bjarne-status-chips">

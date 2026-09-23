@@ -115,7 +115,7 @@ router.post("/svar", async (req: Request, res: Response) => {
   const varRiktig = !isTimeout && body.valgtAlternativId === spørsmål.riktigAlternativId;
   const nyttTrusselnivå = beregnNyttTrusselnivå(body.trusselnivå, varRiktig);
 
-  const { bjarneKommentar, bevisfoto } = await genererBjarneKommentar({
+  const bjarneKommentar = await genererBjarneKommentar({
     spørsmål,
     valgtAlternativId: body.valgtAlternativId,
     varRiktig,
@@ -129,8 +129,7 @@ router.post("/svar", async (req: Request, res: Response) => {
     riktigAlternativId: spørsmål.riktigAlternativId,
     kilde: spørsmål.kilde,
     bjarneKommentar,
-    nyttTrusselnivå,
-    bevisfoto
+    nyttTrusselnivå
   };
 
   res.json(svarRespons);
