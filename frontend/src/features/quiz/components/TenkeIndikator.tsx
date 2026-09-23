@@ -3,9 +3,8 @@ import { Box, Group, Text } from "@mantine/core";
 
 const TENKE_MELDINGER = [
   "Bjarne sukker…",
-  "Bjarne leter etter kaffe…",
+  "Bjarne leter etter fasiten…",
   "Bjarne slår opp i vilkårene…",
-  "Bjarne fyller kaffekoppen sin…",
   "Bjarne vurderer å ta en pause…"
 ];
 
@@ -31,7 +30,7 @@ export const TenkeIndikator: React.FC = () => {
       className="bjarne-thinking-pulse"
     >
       <Group gap="sm">
-        <Text size="xl">☕</Text>
+        <Text size="xl">⏳</Text>
         <Text size="md" fw={700} style={{ color: "#1F2A44", fontStyle: "italic" }}>
           {TENKE_MELDINGER[indeks]}
         </Text>

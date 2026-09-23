@@ -42,5 +42,4 @@ export type SvarResponse = {
   kilde: string;
   bjarneKommentar: string;
   nyttTrusselnivå: number;
-  bevisfoto: string;
 };

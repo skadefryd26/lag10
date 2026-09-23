@@ -33,7 +33,6 @@ export type SvarResponse = {
   kilde: string;
   bjarneKommentar: string;
   nyttTrusselnivå: number;
-  bevisfoto: string;
 };
 
 export type TrusselnivåTilstand = "rolig" | "irritert" | "nervøs" | "i panikk";

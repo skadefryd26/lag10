@@ -11,16 +11,16 @@ type Props = {
 
 // Det Bjarne sier mens spilleren tenker, før han har fått noe å kommentere.
 const VENTEREPLIKKER: Record<TrusselnivåTilstand, string> = {
-  rolig: "*sukk* Vel. Svar da. Jeg har kaffe som blir kald.",
+  rolig: "*sukk* Vel. Svar da. Ikke stå der.",
   irritert: "Flaks er ikke kunnskap. Bare så det er sagt.",
   nervøs: "Du har lest vilkårene på forhånd, ikke sant? Det er nesten juks.",
-  "i panikk": "Kan vi ikke bare ta en kaffepause? Nå? Vær så snill?"
+  "i panikk": "Kan vi ikke bare ta en pause? Nå? Vær så snill?"
 };
 
 export const BjarneSnakkeboble: React.FC<Props> = ({ tilstand, kommentar, tenker, laster }) => {
   let tekst = VENTEREPLIKKER[tilstand];
   if (laster) tekst = "Et øyeblikk. Jeg blar i vilkårene. Igjen.";
-  if (tenker) tekst = "Hmm… la meg sjekke om du tilfeldigvis hadde rett. *slurp*";
+  if (tenker) tekst = "Hmm… la meg sjekke om du tilfeldigvis hadde rett. *sukk*";
   if (kommentar) tekst = kommentar;
 
   return (

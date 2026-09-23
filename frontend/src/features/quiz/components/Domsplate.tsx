@@ -1,7 +1,6 @@
 import type React from "react";
 import { Box, Button, Group, Stack, Text, Badge } from "@mantine/core";
 import type { SvarResponse } from "../types/quizTypes.js";
-import { Bevisfoto } from "./Bevisfoto.js";
 
 type Props = {
   svarResultat: SvarResponse;
@@ -74,8 +73,6 @@ export const Domsplate: React.FC<Props> = ({
             {svarResultat.kilde}
           </Text>
         </Box>
-
-        <Bevisfoto bevisfotoTekst={svarResultat.bevisfoto} />
 
         <Group justify="flex-end" mt="xs">
           <Button
