@@ -1,8 +1,9 @@
 import { Router, Request, Response } from "express";
 import { SPORSMAL_BANK } from "../data/sporsmal.js";
-import { SpørsmålDokument, SpørsmålResponse, SvarRequest, SvarResponse } from "../types/quizTypes.js";
+import { SpørsmålDokument, SpørsmålResponse, SvarRequest, SvarResponse, ResultatRequest, ResultatResponse } from "../types/quizTypes.js";
 import { beregnNyttTrusselnivå } from "../services/trusselnivaa.js";
 import { genererBjarneKommentar } from "../services/bjarneService.js";
+import { genererResultatkommentar } from "../services/resultatService.js";
 import { genererHistoriespørsmål } from "../services/historieGenerator.js";
 
 const router = Router();
@@ -119,7 +120,8 @@ router.post("/svar", async (req: Request, res: Response) => {
     valgtAlternativId: body.valgtAlternativId,
     varRiktig,
     trusselnivå: nyttTrusselnivå,
-    tidsavbrudd: isTimeout
+    tidsavbrudd: isTimeout,
+    tidligereKommentarer: Array.isArray(body.tidligereKommentarer) ? body.tidligereKommentarer : []
   });
 
   const svarRespons: SvarResponse = {
@@ -132,6 +134,32 @@ router.post("/svar", async (req: Request, res: Response) => {
   };
 
   res.json(svarRespons);
+});
+
+router.post("/resultat", async (req: Request, res: Response) => {
+  const body = req.body as Partial<ResultatRequest>;
+
+  if (
+    !body ||
+    typeof body.riktige !== "number" ||
+    typeof body.totalt !== "number" ||
+    typeof body.besteRekke !== "number"
+  ) {
+    res.status(400).json({ error: "Ugyldig forespørsel. Må inneholde riktige, totalt og besteRekke." });
+    return;
+  }
+
+  const respons: ResultatResponse = {
+    kommentar: await genererResultatkommentar({
+      riktige: body.riktige,
+      totalt: body.totalt,
+      besteRekke: body.besteRekke,
+      trusselnivå: typeof body.trusselnivå === "number" ? body.trusselnivå : 0,
+      tidligereKommentarer: Array.isArray(body.tidligereKommentarer) ? body.tidligereKommentarer : []
+    })
+  };
+
+  res.json(respons);
 });
 
 export default router;

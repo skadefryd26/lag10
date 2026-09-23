@@ -7,12 +7,15 @@ type Props = {
   svarResultat: SvarResponse;
   erTidsavbrudd: boolean;
   onNesteSpørsmål: () => void;
+  /** Standard er «Neste spørsmål →»; siste spørsmål i runden sier «Se resultatet →». */
+  tekstKnapp?: string;
 };
 
 export const Domsplate: React.FC<Props> = ({
   svarResultat,
   erTidsavbrudd,
-  onNesteSpørsmål
+  onNesteSpørsmål,
+  tekstKnapp = "Neste spørsmål →"
 }) => {
   const erRiktig = svarResultat.riktig;
 
@@ -101,7 +104,7 @@ export const Domsplate: React.FC<Props> = ({
               cursor: "pointer"
             }}
           >
-            Neste spørsmål →
+            {tekstKnapp}
           </Button>
         </Group>
       </Stack>

@@ -22,30 +22,34 @@ Du føler deg truet av spillere som kan vilkårene godt. Du får oppgitt et trus
 Humoren skal handle om situasjonen, forsikringsverdenen og din egen latskap og forfengelighet.
 Du skal aldri være nedsettende mot spilleren, mot kunder eller mot kolleger. Du skal ikke finne på tall, grenser eller vilkår: du får oppgitt riktig svar og kilden, og holder deg til den.
 
-Laget har skrevet to setninger for nivå 0 (rolig). Bruk gjerne dem ordrett når anledningen passer,
-og hold alltid samme tone i dette nivået:
+Mønstrene nedenfor er skrevet av laget. Du bruker TONEN, holdningen og vendingene deres — men
+selve kommentaren skriver du i dine egne ord, tilpasset spørsmålet og svaret. Av og til kan en hel
+setning gå igjen; du kan aldri levere samme kommentar to ganger på rad, og aldri gjenbruke en
+setning du allerede har brukt i denne runden. Du får hele lista over kommentarene du har gitt,
+nederst i oppgaven.
+
+Nivå 0 (rolig):
 
 - Riktig svar: «Gratulerer med riktig svar! Jeg ser at du ble glad nå, og det sier så mye om hvor
   lavt ambisjonsnivået ditt ligger.»
 - Feil svar: «Som forventet. Det blir ingen skadebehandler av deg. Jeg beholder jobben, og du —
   skuffelsen.»
 
-Laget har også skrevet to setninger for nivå 26–50 (irritert). Bruk dem på samme måte:
+Nivå 26–50 (irritert):
 
 - Riktig svar: «Etter et par riktige svar kom selvtilliten, men husk at den vil forsvinne like
   fort igjen ved neste spørsmål.»
 - Feil svar: «Aldri før har jeg sett noen lengre unna autorisasjon som skadebehandler. Aldri før
   har jeg følt meg tryggere om jobben min.»
 
-Laget har skrevet to setninger for nivå 51–75 (nervøs). Bruk dem på samme måte:
+Nivå 51–75 (nervøs):
 
 - Riktig svar: «Jeg ser at du ikke har hatt noe bedre å gjøre enn å lese forsikringsvilkår. Det
   sier litt om hvem du er.»
 - Feil svar: «Jeg begynte nesten å tro på menneskelig intelligens, men dette her var meget
   betryggende.»
 
-Laget har skrevet to setninger for nivå 76–100 (i panikk). Bruk dem på samme måte — her er han
-særlig ute av fatning:
+Nivå 76–100 (i panikk) — her er han særlig ute av fatning:
 
 - Riktig svar: «Mennesker er redde for å bli erstattet av AI. Men de er ikke redde for å
   erstatte AI med mennesker. Snakk om en dobbeltmoral.»
@@ -130,7 +134,44 @@ type GenererKommentarParams = {
   varRiktig: boolean;
   trusselnivå: number;
   tidsavbrudd?: boolean;
+  /** Kommentarene Bjarne allerede har gitt i runden — han får dem i oppgaven og må unngå dem. */
+  tidligereKommentarer?: string[];
 };
+
+function normaliser(tekst: string): string {
+  return tekst.toLowerCase().replace(/\s+/g, " ").trim();
+}
+
+function erBrukt(tekst: string, tidligere: readonly string[]): boolean {
+  const n = normaliser(tekst);
+  if (!n) return false;
+  return tidligere.some((tidligereTekst) => normaliser(tidligereTekst) === n);
+}
+
+/** Reservetekstene roterer hvis den naturlige allerede er brukt i runden. */
+function velgReservekommentar(
+  trusselnivå: number,
+  varRiktig: boolean,
+  tidligere: readonly string[],
+  tidsavbrudd?: boolean
+): string {
+  if (tidsavbrudd) {
+    const vedTidsavbrudd = hentFallbackKommentar(trusselnivå, varRiktig, true).bjarneKommentar;
+    if (!erBrukt(vedTidsavbrudd, tidligere)) {
+      return vedTidsavbrudd;
+    }
+  }
+
+  const start = trusselnivå <= 25 ? 0 : trusselnivå <= 50 ? 1 : trusselnivå <= 75 ? 2 : 3;
+  const bånd = [25, 50, 75, 100];
+  for (let skritt = 0; skritt < bånd.length; skritt++) {
+    const kandidat = hentFallbackKommentar(bånd[(start + skritt) % bånd.length], varRiktig).bjarneKommentar;
+    if (!erBrukt(kandidat, tidligere)) {
+      return kandidat;
+    }
+  }
+  return hentFallbackKommentar(trusselnivå, varRiktig).bjarneKommentar;
+}
 
 function parseBjarneJson(rawText: string): BjarneRespons {
   const cleanedText = rawText
@@ -170,6 +211,7 @@ function parseBjarneJson(rawText: string): BjarneRespons {
 
 export async function genererBjarneKommentar(params: GenererKommentarParams): Promise<BjarneRespons> {
   const { spørsmål, valgtAlternativId, varRiktig, trusselnivå, tidsavbrudd } = params;
+  const tidligere = (params.tidligereKommentarer ?? []).filter((tekst) => typeof tekst === "string" && tekst.trim().length > 0);
 
   const valgtAlternativ = spørsmål.alternativer.find((a) => a.id === valgtAlternativId);
   const riktigAlternativ = spørsmål.alternativer.find((a) => a.id === spørsmål.riktigAlternativId);
@@ -185,19 +227,47 @@ Spillerens valgte svar: ${valgtTekst}
 Resultat: ${tidsavbrudd ? "FEIL/GALT (Tidsavbrudd - tiden gikk ut)" : (varRiktig ? "RIKTIG" : "FEIL/GALT")}
 Fasit / Riktig svar: ${riktigTekst}
 Kilde i vilkårene: ${spørsmål.kilde}
-Spillerens trusselnivå etter svaret: ${trusselnivå} (Tilstand: ${tilstand})
+Spillerens trusselnivå etter svaret: ${trusselnivå} (Tilstand: ${tilstand})${
+  tidligere.length > 0
+    ? `
+
+Kommentarer du allerede har gitt i denne runden — ingen av dem kan brukes igjen, verbatim eller nesten:
+${tidligere.map((tekst, i) => `${i + 1}. ${tekst}`).join("\n")}`
+    : ""
+}
 
 Vennligst gi din kommentar som Bjarne og et fiktivt bevisfoto i det påkrevde JSON-formatet {"kommentar": "...", "bevisfoto": "..."}.`;
 
   try {
-    const rawTekst = await genererSvarFraGateway({
-      instructions: BJARNE_SYSTEM_PROMPT,
-      input
-    });
-    return parseBjarneJson(rawTekst);
+    const første = parseBjarneJson(
+      await genererSvarFraGateway({ instructions: BJARNE_SYSTEM_PROMPT, input })
+    );
+
+    if (!erBrukt(første.bjarneKommentar, tidligere)) {
+      return første;
+    }
+
+    // Han gjentok seg. Vi ber ham én gang til, med avtalebruddet skrevet rett ut.
+    const påNytt = parseBjarneJson(
+      await genererSvarFraGateway({
+        instructions: BJARNE_SYSTEM_PROMPT,
+        input: `${input}
+
+Du leverte nettopp «${første.bjarneKommentar}», som er en gjentakelse av noe du har sagt før. Skriv en helt annen kommentar.`
+      })
+    );
+
+    if (!erBrukt(påNytt.bjarneKommentar, tidligere)) {
+      return påNytt;
+    }
+
+    return { bjarneKommentar: velgReservekommentar(trusselnivå, varRiktig, tidligere, tidsavbrudd), bevisfoto: påNytt.bevisfoto };
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : String(err);
     console.warn(`[bjarneService] AI Gateway feilet, bruker fallback. Årsak: ${errorMsg}`);
-    return hentFallbackKommentar(trusselnivå, varRiktig, tidsavbrudd);
+    return {
+      bjarneKommentar: velgReservekommentar(trusselnivå, varRiktig, tidligere, tidsavbrudd),
+      bevisfoto: ""
+    };
   }
 }
