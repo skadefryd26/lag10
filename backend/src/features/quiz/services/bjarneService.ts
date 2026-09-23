@@ -73,7 +73,7 @@ Spillerens valgte svar: ${valgtTekst}
 Resultat: ${varRiktig ? "RIKTIG" : "FEIL/GALT"}
 Fasit / Riktig svar: ${riktigTekst}
 Kilde i vilkårene: ${spørsmål.kilde}
-Spillerens trusselnivå før svaret: ${trusselnivå} (Tilstand: ${tilstand})
+Spillerens trusselnivå etter svaret: ${trusselnivå} (Tilstand: ${tilstand})
 
 Vennligst gi din korte kommentar som Bjarne (1-3 setninger, på norsk).`;
 
