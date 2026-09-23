@@ -155,7 +155,7 @@ Spillerens valgte svar: ${valgtTekst}
 Resultat: ${tidsavbrudd ? "FEIL/GALT (Tidsavbrudd - tiden gikk ut)" : (varRiktig ? "RIKTIG" : "FEIL/GALT")}
 Fasit / Riktig svar: ${riktigTekst}
 Kilde i vilkårene: ${spørsmål.kilde}
-Spillerens trusselnivå før svaret: ${trusselnivå} (Tilstand: ${tilstand})
+Spillerens trusselnivå etter svaret: ${trusselnivå} (Tilstand: ${tilstand})
 
 Vennligst gi din kommentar som Bjarne og et fiktivt bevisfoto i det påkrevde JSON-formatet {"kommentar": "...", "bevisfoto": "..."}.`;
 
