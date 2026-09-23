@@ -10,6 +10,7 @@ type Props = {
   isSubmitting: boolean;
   onVelgAlternativ: (id: string) => void;
   onNesteSpørsmål: () => void;
+  tekstKnapp?: string;
 };
 
 const OPTION_LABELS = ["A", "B", "C", "D"];
@@ -20,7 +21,8 @@ export const SpørsmålKort: React.FC<Props> = ({
   svarResultat,
   isSubmitting,
   onVelgAlternativ,
-  onNesteSpørsmål
+  onNesteSpørsmål,
+  tekstKnapp
 }) => {
   const harBesvart = svarResultat !== null;
   const erTidsavbrudd = valgtId === "tidsavbrudd";
@@ -229,6 +231,7 @@ export const SpørsmålKort: React.FC<Props> = ({
           svarResultat={svarResultat}
           erTidsavbrudd={erTidsavbrudd}
           onNesteSpørsmål={onNesteSpørsmål}
+          tekstKnapp={tekstKnapp}
         />
       )}
     </Stack>

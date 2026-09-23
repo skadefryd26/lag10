@@ -11,6 +11,20 @@ export type SvarRequest = {
   valgtAlternativId: string;
   trusselnivå: number;
   tidsavbrudd?: boolean;
+  /** Kommentarene Bjarne allerede har gitt i denne runden, slik at han aldri gjentar seg. */
+  tidligereKommentarer?: string[];
+};
+
+export type ResultatRequest = {
+  riktige: number;
+  totalt: number;
+  besteRekke: number;
+  trusselnivå: number;
+  tidligereKommentarer?: string[];
+};
+
+export type ResultatResponse = {
+  kommentar: string;
 };
 
 export type SvarResponse = {
