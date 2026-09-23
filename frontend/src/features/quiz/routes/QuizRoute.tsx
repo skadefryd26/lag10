@@ -8,6 +8,7 @@ import { hentTilstand, Trusselmåler } from "../components/Trusselmåler.js";
 import { SpørsmålKort } from "../components/SpørsmålKort.js";
 import { Nedtelling } from "../components/Nedtelling.js";
 import { BjarneAvatar } from "../components/BjarneAvatar.js";
+import { BjarneSnakkeboble } from "../components/BjarneSnakkeboble.js";
 import { useNedtelling } from "../hooks/useNedtelling.js";
 import { avfyrKonfetti } from "../utils/konfetti.js";
 
@@ -108,18 +109,27 @@ export const QuizPage: React.FC = () => {
       <Box className={showShake ? "quiz-shell shake-effect" : "quiz-shell"}>
         <header className="quiz-header">
           <Box>
-            <Text className="eyebrow">BJARNE LIVE</Text>
-            <Title order={1} className="quiz-title">Vilkårsduellen</Title>
-            <Text className="quiz-subtitle">Svar før Bjarne rekker å forklare hvorfor han har rett.</Text>
+            <Title order={1} className="quiz-title">Bjarnegodkjent</Title>
+            <Text className="quiz-tagline">en uoffisiell autorisasjonsordning for skadeforsikring</Text>
             <Box className="bjarne-meter-stack" aria-label="Bjarne og kaffebehov">
-              <Group className="bjarne-status-row" align="center" gap="md">
-                <BjarneAvatar tilstand={tilstand} nivå={trusselnivå} />
-                <Group gap="sm" className="bjarne-status-chips">
-                  <Box className="streak-chip"><span>🔥</span> {streak} på rad</Box>
-                  <Box className="threat-chip"><span className="live-dot" /> Bjarne: {tilstand}</Box>
-                </Group>
+              <Box className="bjarne-stage">
+                <Box className="bjarne-stage-venstre">
+                  <BjarneAvatar tilstand={tilstand} nivå={trusselnivå} />
+                  <BjarneSnakkeboble
+                    tilstand={tilstand}
+                    kommentar={svarResultat?.bjarneKommentar ?? null}
+                    tenker={svarMutation.isPending}
+                    laster={isQuestionLoading}
+                  />
+                </Box>
+                <Box className="bjarne-stage-hoyre">
+                  <Trusselmåler trusselnivå={trusselnivå} />
+                </Box>
+              </Box>
+              <Group gap="sm" className="bjarne-status-chips">
+                <Box className="streak-chip"><span>🔥</span> {streak} på rad</Box>
+                <Box className="threat-chip"><span className="live-dot" /> Bjarne: {tilstand}</Box>
               </Group>
-              <Trusselmåler trusselnivå={trusselnivå} />
               {spørsmål && !isQuestionLoading && (
                 <Box className="header-timer header-timer-under-meter">
                   <Nedtelling tidGjenstår={tidGjenstår} totalTid={20} aktiv={isTimerActive} />
