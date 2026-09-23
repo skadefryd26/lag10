@@ -59,7 +59,7 @@ export const ResultatKort: React.FC<Props> = ({
         </Title>
 
         <Group gap="sm">
-          <Box p="sm" style={tallfelt}>
+          <Box p="sm" className="resultat-tallfelt" style={tallfelt}>
             <Text size="xs" fw={800} mb={2}>
               RIKTIGE
             </Text>
@@ -68,7 +68,7 @@ export const ResultatKort: React.FC<Props> = ({
             </Text>
           </Box>
 
-          <Box p="sm" style={tallfelt}>
+          <Box p="sm" className="resultat-tallfelt" style={tallfelt}>
             <Text size="xs" fw={800} mb={2}>
               BESTE REKKE
             </Text>
@@ -80,6 +80,7 @@ export const ResultatKort: React.FC<Props> = ({
 
         <Box
           p="md"
+          className="resultat-oppsummering"
           style={{
             backgroundColor: "#fff8dd",
             border: "1px solid #f2d772",

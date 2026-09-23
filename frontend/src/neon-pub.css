@@ -72,6 +72,9 @@
 
 /* Neonskiltet: tittelen lyser rosa. */
 .quiz-title {
+  margin-top: 36px !important;
+  font-size: clamp(3.3rem, 9vw, 6.3rem) !important;
+  line-height: 1 !important;
   color: #fff !important;
   letter-spacing: 0.02em !important;
   text-transform: uppercase;
@@ -82,6 +85,19 @@
     0 0 44px var(--neon-pink),
     0 0 80px var(--neon-pink) !important;
   animation: neonFlicker 8s infinite;
+}
+
+/* Undertittelen under neonskiltet: små bokstaver, cyan glød. */
+.quiz-tagline {
+  margin-top: 10px;
+  margin-bottom: 40px;
+  color: var(--neon-cyan) !important;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.425rem, 2.7vw, 1.875rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  text-shadow: 0 0 6px rgba(34, 228, 255, 0.8), 0 0 18px rgba(34, 228, 255, 0.5);
 }
 
 .eyebrow {
@@ -130,19 +146,219 @@
   color: #ffe9f3 !important;
 }
 
-/* Barometeret henger også på veggen: helt dekkende, med cyan neonkant. */
-.threat-meter {
-  background: #fffdf8 !important;
-  border: 3px solid var(--neon-cyan) !important;
-  box-shadow:
-    0 0 14px rgba(34, 228, 255, 0.6),
-    0 0 36px rgba(34, 228, 255, 0.3),
-    0 18px 44px rgba(0, 0, 0, 0.6) !important;
+/* ---------- Sort tema: alt som var hvitt er nå sort, med lys tekst ---------- */
+:root {
+  --sort-flate: #0a0a0c;
+  --sort-flate-2: #141418;
+  --sort-kant: #3a3a44;
+  --lys-tekst: #f5f5f7;
+  --dempet-tekst: #c4c4ce;
+}
+
+/* Spørsmålskortet og domsplaten */
+.quiz-main-column .corner-brackets {
+  background: var(--sort-flate) !important;
+  color: var(--lys-tekst) !important;
+}
+
+.quiz-main-column .corner-brackets p,
+.quiz-main-column .corner-brackets h1,
+.quiz-main-column .corner-brackets h2,
+.quiz-main-column .corner-brackets h3,
+.quiz-main-column .corner-brackets span:not(.live-dot),
+.quiz-main-column .corner-brackets [style*="color: #f8fafc"],
+.quiz-main-column .corner-brackets .bjarne-kommentar-box p,
+.quiz-main-column .corner-brackets .bjarne-kommentar-box span {
+  color: var(--lys-tekst) !important;
+}
+
+/* Merkelappen «Vilkårskilde skjult» var brun på hvitt; nå gul på sort. */
+.quiz-main-column .corner-brackets .mantine-Badge-root[data-variant="outline"] {
+  border-color: var(--neon-yellow) !important;
+  color: var(--neon-yellow) !important;
+}
+.quiz-main-column .corner-brackets .mantine-Badge-root[data-variant="outline"] span {
+  color: var(--neon-yellow) !important;
+}
+
+/* Svarknappene */
+.quiz-main-column .corner-brackets [data-alternativ],
+.quiz-main-column [data-alternativ] {
+  background: var(--sort-flate-2) !important;
+  border: 2px solid var(--sort-kant) !important;
+  color: var(--lys-tekst) !important;
+}
+
+.quiz-main-column [data-alternativ] p,
+.quiz-main-column [data-alternativ] span:not(.pad-key-badge),
+.quiz-main-column .corner-brackets [data-alternativ] p,
+.quiz-main-column .corner-brackets [data-alternativ] span:not(.pad-key-badge) {
+  color: var(--lys-tekst) !important;
+}
+
+.quiz-main-column [data-alternativ] .pad-key-badge,
+.quiz-main-column .corner-brackets [data-alternativ] .pad-key-badge {
+  background: var(--neon-yellow) !important;
+  color: #0a0a0c !important;
+  border: 0 !important;
+}
+
+.quiz-main-column [data-alternativ]:hover:not(:disabled) {
+  background: #1f0a16 !important;
+  border-color: var(--neon-pink) !important;
+}
+
+/* Riktig/feil beholder sine sterke farger, med hvit tekst. */
+.quiz-main-column button.svar-alternativ.svar-riktig {
+  background: #0f5c2e !important;
+  border-color: #3ee07a !important;
+}
+.quiz-main-column button.svar-alternativ.svar-feil {
+  background: #8a1414 !important;
+  border-color: #ff5a5a !important;
+}
+.quiz-main-column button.svar-alternativ.svar-valgt {
+  background: #5c4200 !important;
+  border-color: var(--neon-yellow) !important;
+}
+
+/* Bevisfoto */
+.bevisfoto-card {
+  background: var(--sort-flate-2) !important;
+  border-color: #c89bff !important;
+}
+.quiz-main-column .corner-brackets .bevisfoto-card p {
+  color: #e9dcff !important;
+}
+
+/* Lasteteksten */
+.loading-card, .loading-card p {
+  color: var(--lys-tekst) !important;
+}
+
+/* ---------- Bjarne stor til venstre, barometeret lite til høyre ---------- */
+.bjarne-stage {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 18px;
+}
+
+.bjarne-stage-venstre {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex: 1;
+  min-width: 0;
+}
+
+.bjarne-stage-hoyre {
+  flex: 0 0 250px;
+}
+
+.bjarne-photo {
+  width: 170px !important;
+  height: 170px !important;
+}
+
+.bjarne-status-chips {
+  margin-top: 16px;
+}
+
+/* Snakkeboblen, med en spiss som peker mot Bjarne. */
+.bjarne-snakkeboble {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  max-width: 440px;
+  padding: 16px 20px;
+  border: 2px solid var(--neon-yellow);
+  border-radius: 20px;
+  background: var(--sort-flate);
+  box-shadow: 0 0 12px rgba(255, 228, 92, 0.5), 0 10px 30px rgba(0, 0, 0, 0.5);
+  animation: fadeInSlideUp 0.35s ease-out;
+}
+
+.bjarne-snakkeboble::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -13px;
+  width: 22px;
+  height: 22px;
+  background: var(--sort-flate);
+  border-left: 2px solid var(--neon-yellow);
+  border-bottom: 2px solid var(--neon-yellow);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.bjarne-snakkeboble-navn {
+  margin-bottom: 4px;
+  color: var(--neon-yellow) !important;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.bjarne-snakkeboble-tekst {
+  color: var(--lys-tekst) !important;
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+  line-height: 1.45 !important;
+}
+
+.bjarne-tenker {
+  color: var(--dempet-tekst) !important;
+  font-style: italic;
+}
+
+/* Barometeret: lite, sort og med cyan neonkant. */
+.threat-meter,
+.threat-meter-danger {
+  margin-top: 0 !important;
+  padding: 10px 12px 8px !important;
+  background: var(--sort-flate) !important;
+  border: 2px solid var(--neon-cyan) !important;
+  box-shadow: 0 0 12px rgba(34, 228, 255, 0.55), 0 12px 30px rgba(0, 0, 0, 0.6) !important;
 }
 
 .threat-meter-danger {
-  background: #fff1f2 !important;
   border-color: var(--neon-pink) !important;
+  box-shadow: 0 0 16px rgba(255, 46, 136, 0.7) !important;
+}
+
+.threat-meter p,
+.threat-meter span {
+  color: var(--lys-tekst) !important;
+}
+
+.threat-barometer {
+  background: var(--sort-flate-2) !important;
+  box-shadow: none !important;
+}
+
+.threat-barometer text {
+  fill: var(--dempet-tekst) !important;
+}
+
+.barometer-arc-base { stroke: #2a2a33 !important; }
+.barometer-tick { stroke: #8a8a99 !important; }
+.barometer-needle line,
+.barometer-needle path { stroke: #f5f5f7 !important; fill: #f5f5f7 !important; }
+.barometer-needle-hub { fill: #0a0a0c !important; stroke: #f5f5f7 !important; }
+
+@media (max-width: 760px) {
+  .bjarne-stage { flex-direction: column; align-items: stretch; }
+  .bjarne-stage-venstre { flex-direction: column; }
+  .bjarne-stage-hoyre { flex-basis: auto; }
+  .bjarne-snakkeboble { max-width: none; }
+  .bjarne-snakkeboble::before {
+    top: -13px; left: 50%;
+    transform: translateX(-50%) rotate(135deg);
+  }
 }
 
 @keyframes neonFlicker {
@@ -160,4 +376,47 @@
   .quiz-scene::after {
     animation: none !important;
   }
+}
+
+/* Resultatkortet: sorte felt med lys tekst, i stedet for lyse papirfelt. */
+.quiz-main-column .corner-brackets .resultat-tallfelt {
+  background: var(--sort-flate-2) !important;
+  border-color: var(--sort-kant) !important;
+}
+
+.quiz-main-column .corner-brackets .resultat-oppsummering {
+  background: #1a1605 !important;
+  border-color: var(--neon-yellow) !important;
+}
+
+.quiz-main-column .corner-brackets .resultat-oppsummering p:first-child {
+  color: var(--neon-yellow) !important;
+}
+
+/* Merkelapper: mørkere rød bak hvit tekst, og mørk tekst på grønn og gul, så de er lette å lese. */
+.mantine-Badge-root[style*="background-color: rgb(239, 68, 68)"] {
+  background-color: #b91c1c !important;
+}
+.mantine-Badge-root[style*="background-color: rgb(239, 68, 68)"],
+.mantine-Badge-root[style*="background-color: rgb(239, 68, 68)"] span {
+  color: #ffffff !important;
+}
+.mantine-Badge-root[style*="background-color: rgb(34, 197, 94)"],
+.mantine-Badge-root[style*="background-color: rgb(34, 197, 94)"] span,
+.mantine-Badge-root[style*="background-color: rgb(250, 204, 21)"],
+.mantine-Badge-root[style*="background-color: rgb(250, 204, 21)"] span {
+  color: #0a0a0c !important;
+}
+.quiz-main-column .corner-brackets {
+  --line-strong: #3a3a44;
+}
+.quiz-main-column button.svar-alternativ .mantine-Badge-root[style*="background-color: rgb(34, 197, 94)"],
+.quiz-main-column button.svar-alternativ .mantine-Badge-root[style*="background-color: rgb(34, 197, 94)"] span {
+  color: #0a0a0c !important;
+}
+
+/* Gule knapper får mørk tekst. */
+.quiz-main-column .corner-brackets .mantine-Button-root,
+.quiz-main-column .corner-brackets .mantine-Button-root span {
+  color: #0a0a0c !important;
 }

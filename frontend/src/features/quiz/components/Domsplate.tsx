@@ -65,25 +65,14 @@ export const Domsplate: React.FC<Props> = ({
           </Text>
         </Group>
 
-        <Group grow align="flex-start" gap="md">
-          <Box p="sm" style={{ backgroundColor: "rgba(255, 255, 255, 0.05)", borderRadius: "12px", flex: 1 }}>
-            <Text size="xs" fw={800} style={{ color: "#94a3b8", letterSpacing: "1px" }} mb={2}>
-              VILKÅRSKILDE
-            </Text>
-            <Text size="sm" fw={700} style={{ color: "#f8fafc" }}>
-              {svarResultat.kilde}
-            </Text>
-          </Box>
-
-          <Box p="sm" style={{ backgroundColor: "rgba(255, 255, 255, 0.05)", borderRadius: "12px", borderLeft: `4px solid ${farge}`, flex: 2 }}>
-            <Text size="xs" fw={800} style={{ color: "#facc15", letterSpacing: "1px" }} mb={2}>
-              BJARNES UTTALELSE
-            </Text>
-            <Text size="sm" fw={600} style={{ color: "#f8fafc", fontStyle: "italic", lineHeight: 1.5 }}>
-              «{svarResultat.bjarneKommentar}»
-            </Text>
-          </Box>
-        </Group>
+        <Box p="sm" className="domsplate-kilde" style={{ backgroundColor: "rgba(255, 255, 255, 0.05)", borderRadius: "12px" }}>
+          <Text size="xs" fw={800} style={{ color: "#94a3b8", letterSpacing: "1px" }} mb={2}>
+            VILKÅRSKILDE
+          </Text>
+          <Text size="sm" fw={700} style={{ color: "#f8fafc" }}>
+            {svarResultat.kilde}
+          </Text>
+        </Box>
 
         <Group justify="flex-end" mt="xs">
           <Button
