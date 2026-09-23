@@ -341,6 +341,142 @@ button[data-alternativ]:disabled {
   animation: streakPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+.threat-meter {
+  --threat-color: #3B8EF0;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 16px;
+  padding: 14px 16px 12px;
+  border: 1px solid color-mix(in srgb, var(--threat-color) 35%, #ffffff);
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(241, 245, 255, 0.7));
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--threat-color) 16%, transparent);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+}
+
+.threat-meter-danger {
+  animation: threatMeterPulse 0.8s infinite ease-in-out;
+  background: linear-gradient(135deg, rgba(255, 245, 245, 0.95), rgba(255, 226, 230, 0.88));
+}
+
+.valium-dose-visual {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+  min-height: 28px;
+}
+
+.valium-pill {
+  position: relative;
+  width: 22px;
+  height: 11px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--threat-color) 55%, #8b96ae);
+  border-radius: 999px;
+  background: linear-gradient(90deg, #fff7d6 0 48%, var(--threat-color) 49% 100%);
+  box-shadow: 0 2px 5px rgba(31, 42, 68, 0.2);
+  transform: rotate(-18deg);
+  animation: pillDropIn 0.25s ease-out both;
+}
+
+.valium-pill span {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 48%;
+  border-left: 1px solid rgba(31, 42, 68, 0.25);
+}
+
+.threat-meter-signal {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--threat-color);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--threat-color) 18%, transparent), 0 0 12px var(--threat-color);
+  animation: threatSignalBlink 1.3s infinite ease-in-out;
+}
+
+.threat-barometer {
+  overflow: hidden;
+  margin: 2px -4px -4px;
+  padding: 0 8px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(219, 227, 240, 0.15), rgba(219, 227, 240, 0.7));
+  box-shadow: inset 0 2px 5px rgba(31, 42, 68, 0.12);
+}
+
+.threat-barometer svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.barometer-arc {
+  fill: none;
+  stroke-width: 14;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--threat-color) 42%, transparent));
+  transition: stroke 0.4s ease;
+}
+
+.barometer-arc-base {
+  stroke: #cbd5e1;
+  filter: none;
+}
+
+.barometer-tick {
+  stroke: #64748b;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.barometer-needle {
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.barometer-needle line {
+  stroke: #53627f;
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.barometer-needle path {
+  fill: #53627f;
+  stroke: #53627f;
+  stroke-width: 1.5;
+}
+
+.barometer-needle-hub {
+  fill: #f8fafc;
+  stroke: #53627f;
+  stroke-width: 4;
+  filter: drop-shadow(0 2px 3px rgba(31, 42, 68, 0.3));
+}
+
+.threat-barometer text {
+  fill: #6b7793;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 6.5px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+}
+
+@keyframes threatMeterPulse {
+  0%, 100% { box-shadow: 0 8px 20px rgba(239, 68, 68, 0.14); }
+  50% { box-shadow: 0 8px 32px rgba(239, 68, 68, 0.36); }
+}
+
+@keyframes threatSignalBlink {
+  0%, 100% { opacity: 0.65; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+@keyframes pillDropIn {
+  from { opacity: 0; transform: translateY(-5px) rotate(-18deg) scale(0.7); }
+  to { opacity: 1; transform: translateY(0) rotate(-18deg) scale(1); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .shake-effect {
     animation: none !important;
@@ -355,6 +491,14 @@ button[data-alternativ]:disabled {
     animation: none !important;
   }
   .bjarne-thinking-pulse {
+    animation: none !important;
+  }
+  .threat-meter,
+  .threat-meter-danger,
+  .threat-meter-signal {
+    animation: none !important;
+  }
+  .valium-pill {
     animation: none !important;
   }
 }
@@ -373,10 +517,7 @@ button[data-alternativ]:disabled {
 }
 
 .quiz-header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
+  display: block;
   margin-bottom: 28px;
 }
 
@@ -406,6 +547,69 @@ button[data-alternativ]:disabled {
   font-size: 1rem;
 }
 
+.bjarne-meter-stack {
+  width: 100%;
+  margin-top: 14px;
+}
+
+.bjarne-status-row {
+  min-height: 92px;
+}
+
+.bjarne-status-chips {
+  flex-wrap: wrap;
+}
+
+.bjarne-photo {
+  position: relative;
+  width: 104px;
+  height: 104px;
+  overflow: hidden;
+  border: 4px solid #fff;
+  border-radius: 50%;
+  background: #312e81;
+  animation: bjarneBob 3s infinite ease-in-out;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.bjarne-photo-panic {
+  animation: bjarnePanicTremble 0.2s infinite ease-in-out;
+}
+
+.bjarne-photo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center 38%;
+  transform: scale(1.16);
+  transition: filter 0.4s ease;
+}
+
+.bjarne-photo-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), transparent 40%, rgba(31, 42, 68, 0.2));
+  mix-blend-mode: screen;
+}
+
+.bjarne-meter-stack > .mantine-Stack-root {
+  align-items: flex-start;
+}
+
+.header-timer-under-meter {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin-top: 12px;
+}
+
+.header-timer-under-meter > div {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .header-stats {
   align-items: center;
   flex-wrap: wrap;
@@ -429,29 +633,18 @@ button[data-alternativ]:disabled {
 
 .play-area {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 86px;
+  grid-template-columns: minmax(0, 1fr);
   gap: 18px;
   align-items: start;
 }
 
 .quiz-main-column { min-width: 0; }
 
-.bjarne-sidekick {
-  display: flex;
-  justify-content: center;
-  padding-top: 10px;
-}
-
 .duell-avatars {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 3px;
-}
-
-.bjarne-sidekick > div {
-  transform: scale(0.84);
-  transform-origin: top center;
 }
 
 .mini-player,
@@ -561,7 +754,8 @@ button[data-alternativ]:disabled {
 @media (max-width: 760px) {
   .quiz-scene { padding: 24px 14px 40px; }
   .quiz-header { display: block; }
-  .header-stats { justify-content: flex-start; margin-top: 18px; }
+  .bjarne-status-row { align-items: flex-start; }
+  .bjarne-status-chips { flex-direction: column; align-items: flex-start; }
   .play-area { display: flex; flex-direction: column; }
   .quiz-main-column, .bjarne-sidekick { width: 100%; }
   .bjarne-sidekick { position: static; width: 100%; }
