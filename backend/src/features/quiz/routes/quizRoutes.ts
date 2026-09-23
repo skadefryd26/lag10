@@ -59,7 +59,7 @@ router.post("/svar", async (req: Request, res: Response) => {
     spørsmål,
     valgtAlternativId: body.valgtAlternativId,
     varRiktig,
-    trusselnivå: body.trusselnivå
+    trusselnivå: nyttTrusselnivå
   });
 
   const svarRespons: SvarResponse = {
