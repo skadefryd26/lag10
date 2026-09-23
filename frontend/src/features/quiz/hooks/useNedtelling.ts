@@ -34,21 +34,11 @@ export function useNedtelling({
       return;
     }
 
-    const interval = setInterval(() => {
-      setTidGjenstår((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          if (!timeoutCalledRef.current) {
-            timeoutCalledRef.current = true;
-            onTimeout();
-          }
-          return 0;
-        }
-        return prev - 1;
-      });
+    const timer = setTimeout(() => {
+      setTidGjenstår((prev) => Math.max(0, prev - 1));
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => clearTimeout(timer);
   }, [aktiv, tidGjenstår, onTimeout]);
 
   return tidGjenstår;
