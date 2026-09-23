@@ -19,6 +19,7 @@ export type SvarRequest = {
   spørsmålId: string;
   valgtAlternativId: string;
   trusselnivå: number;
+  tidsavbrudd?: boolean;
 };
 
 export type SvarResponse = {
@@ -27,4 +28,5 @@ export type SvarResponse = {
   kilde: string;
   bjarneKommentar: string;
   nyttTrusselnivå: number;
+  bevisfoto: string;
 };

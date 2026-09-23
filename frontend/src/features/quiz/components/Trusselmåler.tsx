@@ -19,27 +19,27 @@ export const Trusselmåler: React.FC<Props> = ({ trusselnivå }) => {
   const hentProgressFarge = () => {
     switch (tilstand) {
       case "rolig":
-        return "cyan";
+        return "#3B8EF0";
       case "irritert":
-        return "yellow";
+        return "#FFC542";
       case "nervøs":
-        return "orange";
+        return "#FF7B93";
       case "i panikk":
-        return "red";
+        return "#EF4444";
     }
   };
 
   return (
     <Box style={{ width: "100%" }}>
       <Group justify="space-between" mb={6}>
-        <Text size="xs" fw={700} c="dimmed" tt="uppercase" lts={1}>
+        <Text size="xs" fw={800} style={{ color: "#6B7793", letterSpacing: "1px", textTransform: "uppercase" }}>
           Bjarnes trusselnivå
         </Text>
         <Group gap={6}>
-          <Text size="sm" fw={800} style={{ textTransform: "capitalize" }}>
+          <Text size="sm" fw={800} style={{ color: "#1F2A44", textTransform: "capitalize" }}>
             {tilstand}
           </Text>
-          <Text size="xs" c="dimmed">
+          <Text size="xs" fw={700} style={{ color: "#6B7793" }}>
             ({trusselnivå}%)
           </Text>
         </Group>
@@ -51,8 +51,8 @@ export const Trusselmåler: React.FC<Props> = ({ trusselnivå }) => {
         radius="xl"
         animated={trusselnivå > 75}
         style={{
-          boxShadow: "inset 0 2px 4px rgba(0,0,0,0.5)",
-          backgroundColor: "#1e293b"
+          boxShadow: "inset 0 2px 4px rgba(31, 42, 68, 0.12)",
+          backgroundColor: "#E2E8F0"
         }}
       />
     </Box>

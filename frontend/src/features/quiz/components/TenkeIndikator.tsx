@@ -23,16 +23,16 @@ export const TenkeIndikator: React.FC = () => {
     <Box
       p="md"
       style={{
-        backgroundColor: "rgba(30, 41, 59, 0.8)",
-        borderRadius: "12px",
-        border: "1px stroke #334155",
-        backdropFilter: "blur(4px)"
+        backgroundColor: "#FFFFFF",
+        borderRadius: "20px",
+        border: "2px solid #FFC542",
+        boxShadow: "0 8px 24px rgba(255, 197, 66, 0.25)"
       }}
       className="bjarne-thinking-pulse"
     >
       <Group gap="sm">
         <Text size="xl">☕</Text>
-        <Text size="md" fw={600} c="amber.4" style={{ fontStyle: "italic" }}>
+        <Text size="md" fw={700} style={{ color: "#1F2A44", fontStyle: "italic" }}>
           {TENKE_MELDINGER[indeks]}
         </Text>
       </Group>

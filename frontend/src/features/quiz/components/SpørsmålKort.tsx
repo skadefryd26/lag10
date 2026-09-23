@@ -1,6 +1,7 @@
-import React from "react";
-import { Badge, Box, Button, Card, Group, Stack, Text, ThemeIcon } from "@mantine/core";
-import { Spørsmål, SvarResponse } from "../types/quizTypes.js";
+import type React from "react";
+import { Badge, Box, Group, Stack, Text } from "@mantine/core";
+import type { Spørsmål, SvarResponse } from "../types/quizTypes.js";
+import { Domsplate } from "./Domsplate.js";
 
 type Props = {
   spørsmål: Spørsmål;
@@ -11,6 +12,8 @@ type Props = {
   onNesteSpørsmål: () => void;
 };
 
+const OPTION_LABELS = ["A", "B", "C", "D"];
+
 export const SpørsmålKort: React.FC<Props> = ({
   spørsmål,
   valgtId,
@@ -20,134 +23,214 @@ export const SpørsmålKort: React.FC<Props> = ({
   onNesteSpørsmål
 }) => {
   const harBesvart = svarResultat !== null;
+  const erTidsavbrudd = valgtId === "tidsavbrudd";
 
   return (
-    <Card
-      shadow="md"
-      padding="xl"
-      radius="lg"
-      style={{
-        backgroundColor: "#1e293b",
-        border: "1px solid #334155"
-      }}
-    >
-      <Stack gap="lg">
-        {spørsmål.historie && (
-          <Text size="md" style={{ color: "#e2e8f0", lineHeight: 1.65 }}>
-            {spørsmål.historie}
-          </Text>
-        )}
-
-        <Text size="xl" fw={700} style={{ color: "#f8fafc", lineHeight: 1.45 }}>
-          {spørsmål.tekst}
-        </Text>
-
+    <Stack gap="lg" style={{ width: "100%" }}>
+      {/* Central Question Stage Panel */}
+      <Box
+        p="xl"
+        style={{
+          backgroundColor: "#131b2e",
+          borderRadius: "20px",
+          border: "1px solid rgba(255, 255, 255, 0.12)",
+          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.4)"
+        }}
+        className="corner-brackets"
+      >
         <Stack gap="md">
-          {spørsmål.alternativer.map((alt) => {
-            const erValgt = valgtId === alt.id;
-            const erRiktigFasit = harBesvart && svarResultat.riktigAlternativId === alt.id;
-            const erFeilValgt = harBesvart && erValgt && !svarResultat.riktig;
-
-            let buttonColor = "slate";
-            let variant: "outline" | "filled" | "light" = "outline";
-
-            if (erRiktigFasit) {
-              buttonColor = "teal";
-              variant = "filled";
-            } else if (erFeilValgt) {
-              buttonColor = "red";
-              variant = "filled";
-            } else if (erValgt) {
-              buttonColor = "amber";
-              variant = "light";
-            }
-
-            const erNøytral = !erRiktigFasit && !erFeilValgt && !erValgt;
-
-            return (
-              <Button
-                key={alt.id}
-                size="lg"
-                variant={variant}
-                color={buttonColor}
-                disabled={isSubmitting || harBesvart}
-                onClick={() => onVelgAlternativ(alt.id)}
-                fullWidth
-                data-alternativ
+          <Group justify="space-between" align="center">
+            <Group gap="xs">
+              <span className="live-dot" />
+              <Badge
+                size="md"
+                variant="filled"
+                radius="xs"
                 style={{
-                  height: "auto",
-                  minHeight: "64px",
-                  padding: "14px 22px",
-                  justifyContent: "flex-start",
-                  whiteSpace: "normal",
-                  textAlign: "left",
-                  fontSize: "1.05rem",
-                  backgroundColor: erNøytral ? "#273549" : undefined,
-                  border: erNøytral ? "2px solid #4d5f7a" : undefined,
-                  color: erNøytral ? "#f8fafc" : undefined,
-                  opacity: 1,
-                  transition: "all 0.15s ease"
+                  backgroundColor: "#ef4444",
+                  color: "#ffffff",
+                  fontWeight: 900,
+                  fontSize: "0.75rem",
+                  letterSpacing: "1px"
                 }}
               >
-                <Group justify="space-between" style={{ width: "100%" }}>
-                  <Text fw={600}>{alt.tekst}</Text>
-                  {erRiktigFasit && <Badge color="teal">Riktig svar</Badge>}
-                  {erFeilValgt && <Badge color="red">Ditt svar (Feil)</Badge>}
-                </Group>
-              </Button>
-            );
-          })}
-        </Stack>
+                LIVE SAK
+              </Badge>
+            </Group>
 
-        {harBesvart && (
-          <Stack gap="md" mt="sm" className="bjarne-kommentar-box">
-            <Box
-              p="md"
+            <Badge
+              size="sm"
+              variant="outline"
+               color="dark"
+              radius="xl"
               style={{
-                backgroundColor: svarResultat.riktig ? "rgba(20, 184, 166, 0.12)" : "rgba(239, 68, 68, 0.12)",
-                borderRadius: "12px",
-                borderLeft: `5px solid ${svarResultat.riktig ? "#10b981" : "#ef4444"}`
+                 borderColor: "#9a6700",
+                 color: "#5c3b00",
+                fontWeight: 700,
+                fontSize: "0.75rem"
               }}
             >
-              <Group gap="sm" mb="xs">
-                <ThemeIcon
-                  color={svarResultat.riktig ? "teal" : "red"}
-                  variant="light"
-                  size="md"
-                  radius="xl"
-                >
-                  {svarResultat.riktig ? "✓" : "✕"}
-                </ThemeIcon>
-                <Text fw={700} c={svarResultat.riktig ? "teal.3" : "red.3"}>
-                  {svarResultat.riktig ? "Riktig besvart!" : "Feil besvart"}
-                </Text>
-              </Group>
+              🔒 Vilkårskilde skjult til dommen
+            </Badge>
+          </Group>
 
-              <Text size="sm" c="dimmed" mb="xs">
-                Kilde: {svarResultat.kilde}
-              </Text>
-
-              <Text size="md" fw={500} style={{ fontStyle: "italic", color: "#f1f5f9" }}>
-                «{svarResultat.bjarneKommentar}»
-              </Text>
-            </Box>
-
-            <Group justify="flex-end">
-              <Button
-                size="md"
-                color="amber"
-                onClick={onNesteSpørsmål}
+          {erTidsavbrudd && (
+            <Group justify="flex-start">
+              <Badge
+                color="red"
+                size="lg"
+                variant="filled"
+                radius="xl"
                 style={{
-                  fontWeight: 700,
-                  boxShadow: "0 4px 12px rgba(245, 158, 11, 0.3)"
+                  fontSize: "0.85rem",
+                  padding: "10px 18px",
+                  backgroundColor: "#ef4444",
+                  color: "#ffffff",
+                  boxShadow: "0 4px 12px rgba(239, 68, 68, 0.4)"
                 }}
               >
-                Neste spørsmål →
-              </Button>
+                ⏱️ Tiden gikk ut! Bjarne overtok behandlingen.
+              </Badge>
             </Group>
-          </Stack>
-        )}
-      </Stack>
-    </Card>
+          )}
+
+          {spørsmål.historie && (
+            <Text
+              size="md"
+              style={{
+                color: "#3c4a66",
+                lineHeight: 1.65,
+                fontFamily: "'Outfit', sans-serif"
+              }}
+            >
+              {spørsmål.historie}
+            </Text>
+          )}
+
+          <Text
+            size="xl"
+            fw={800}
+            style={{
+              color: "#1f2a44",
+              lineHeight: 1.5,
+              fontSize: "1.4rem",
+              fontFamily: "'Outfit', sans-serif"
+            }}
+          >
+            {spørsmål.tekst}
+          </Text>
+        </Stack>
+      </Box>
+
+      {/* 2x2 Answer Control Pads */}
+      <Box
+        className="quiz-options"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gap: "16px",
+          width: "100%"
+        }}
+      >
+        {spørsmål.alternativer.map((alt, index) => {
+          const keyLabel = OPTION_LABELS[index % OPTION_LABELS.length];
+          const erValgt = valgtId === alt.id;
+          const erRiktigFasit = harBesvart && svarResultat.riktigAlternativId === alt.id;
+          const erFeilValgt = harBesvart && erValgt && !svarResultat.riktig;
+
+          let bgColor = "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)";
+          let borderColor = "#334155";
+          let textColor = "#1f2a44";
+          let badgeBg = "rgba(255, 255, 255, 0.08)";
+          let badgeColor = "#facc15";
+
+          if (erRiktigFasit) {
+            bgColor = "linear-gradient(135deg, #166534 0%, #14532d 100%)";
+            borderColor = "#22c55e";
+            textColor = "#ffffff";
+            badgeBg = "#22c55e";
+            badgeColor = "#0f172a";
+          } else if (erFeilValgt) {
+            bgColor = "linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%)";
+            borderColor = "#ef4444";
+            textColor = "#ffffff";
+            badgeBg = "#ef4444";
+            badgeColor = "#ffffff";
+          } else if (erValgt) {
+            bgColor = "linear-gradient(135deg, #854d0e 0%, #713f12 100%)";
+            borderColor = "#facc15";
+            textColor = "#ffffff";
+            badgeBg = "#facc15";
+            badgeColor = "#0f172a";
+          }
+
+            return (
+              <button
+                key={alt.id}
+                type="button"
+                className={`svar-alternativ ${erRiktigFasit ? "svar-riktig" : ""} ${erFeilValgt ? "svar-feil" : ""} ${erValgt && !harBesvart ? "svar-valgt" : ""}`}
+                disabled={isSubmitting || harBesvart}
+              onClick={() => onVelgAlternativ(alt.id)}
+              data-alternativ
+              style={{
+                background: bgColor,
+                borderColor: borderColor,
+                color: textColor
+              }}
+            >
+              <Box className="pad-key-badge" style={{ backgroundColor: badgeBg, color: badgeColor }}>
+                {keyLabel}
+              </Box>
+
+              <Box style={{ flex: 1 }}>
+                <Text fw={700} style={{ color: textColor, fontSize: "1.05rem" }}>
+                  {alt.tekst}
+                </Text>
+              </Box>
+
+              {erRiktigFasit && (
+                <Badge
+                  radius="xl"
+                  size="sm"
+                  style={{
+                    backgroundColor: "#22c55e",
+                    color: "#0f172a",
+                    fontWeight: 900,
+                    marginLeft: "8px",
+                    flexShrink: 0
+                  }}
+                >
+                  ✓ Riktig
+                </Badge>
+              )}
+              {erFeilValgt && (
+                <Badge
+                  radius="xl"
+                  size="sm"
+                  style={{
+                    backgroundColor: "#ef4444",
+                    color: "#ffffff",
+                    fontWeight: 900,
+                    marginLeft: "8px",
+                    flexShrink: 0
+                  }}
+                >
+                  ✕ Feil
+                </Badge>
+              )}
+            </button>
+          );
+        })}
+      </Box>
+
+      {/* After Answering: Dramatic Verdict Panel */}
+      {harBesvart && (
+        <Domsplate
+          svarResultat={svarResultat}
+          erTidsavbrudd={erTidsavbrudd}
+          onNesteSpørsmål={onNesteSpørsmål}
+        />
+      )}
+    </Stack>
   );
 };

@@ -110,14 +110,16 @@ router.post("/svar", async (req: Request, res: Response) => {
     return;
   }
 
-  const varRiktig = body.valgtAlternativId === spørsmål.riktigAlternativId;
+  const isTimeout = Boolean(body.tidsavbrudd || body.valgtAlternativId === "tidsavbrudd");
+  const varRiktig = !isTimeout && body.valgtAlternativId === spørsmål.riktigAlternativId;
   const nyttTrusselnivå = beregnNyttTrusselnivå(body.trusselnivå, varRiktig);
 
-  const bjarneKommentar = await genererBjarneKommentar({
+  const { bjarneKommentar, bevisfoto } = await genererBjarneKommentar({
     spørsmål,
     valgtAlternativId: body.valgtAlternativId,
     varRiktig,
-    trusselnivå: body.trusselnivå
+    trusselnivå: nyttTrusselnivå,
+    tidsavbrudd: isTimeout
   });
 
   const svarRespons: SvarResponse = {
@@ -125,7 +127,8 @@ router.post("/svar", async (req: Request, res: Response) => {
     riktigAlternativId: spørsmål.riktigAlternativId,
     kilde: spørsmål.kilde,
     bjarneKommentar,
-    nyttTrusselnivå
+    nyttTrusselnivå,
+    bevisfoto
   };
 
   res.json(svarRespons);
