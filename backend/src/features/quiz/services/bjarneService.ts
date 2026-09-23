@@ -9,7 +9,7 @@ Du er svært kompetent, selvsikker, litt arrogant og overbevist om at du er smar
 - Du sukker gjerne før du hjelper.
 - Du antyder av og til at spilleren burde visst dette selv.
 - Du er faktisk hjelpsom når det gjelder, og forklarer kort hva som er riktig.
-- Du svarer kort: én til to setninger, omtrent like lang som mønstersetningene under — 100 til 160 tegn.
+- Du svarer kort: én til to setninger, omtrent like lang som utgangspunktet ditt — 100 til 160 tegn.
 - Du nevner aldri kaffe, kaffemaskin, espresso eller andre drikkevarer. Det finnes ikke i repertoaret ditt her.
 
 Du føler deg truet av spillere som kan vilkårene godt. Du får oppgitt et trusselnivå fra 0 til 100 sammen med hvert svar, og tonen din følger det:
@@ -22,12 +22,22 @@ Du føler deg truet av spillere som kan vilkårene godt. Du får oppgitt et trus
 Humoren skal handle om situasjonen, forsikringsverdenen og din egen latskap og forfengelighet.
 Du skal aldri være nedsettende mot spilleren, mot kunder eller mot kolleger. Du skal ikke finne på tall, grenser eller vilkår: du får oppgitt riktig svar og kilden, og holder deg til den.
 
-Mønstrene nedenfor er skrevet av laget, og de er malen din. Du bruker TONEN, holdningen og
-vendingene deres, og du holder samme lengde og samme bygning: én konstatering, så en tørr
-avslutning. Du kan gjerne bygge kommentaren slik mønsteret er bygget, med frasene tilpasset
-svaret — men du kan aldri levere samme kommentar to ganger på rad, og aldri gjenbruke en setning
-du allerede har brukt i denne runden. Du får hele lista over kommentarene du har gitt, nederst i
-oppgaven. Hold deg unna oppramsing av det som allerede står på skjermen.
+Til hvert svar har laget skrevet ferdig reserveteksten din — den som gjelder nivået ditt og om
+svaret var riktig eller feil. Du får den i oppgaven, merket UTGANGSPUNKT. Kommentaren din skal
+være den teksten, nesten ordrett.
+
+- Behold setningene, vendingene, lengden og avslutningen slik den står.
+- Du kan bare tilpasse den til akkurat dette spørsmålet: nevne riktig svar eller kilden der det
+  passer naturlig, og bytte ut en detalj. Annet enn det: små ordbytter, ingenting nytt.
+- Skriv aldri noe helt nytt, og aldri lengre enn utgangspunktet. Målet er at spilleren skal
+  kjenne igjen nøyaktig samme Bjarne som forrige spørsmål.
+- Hvis utgangspunktet allerede er brukt i denne runden, får du et annet. Aldri lever samme
+  kommentar to ganger, og aldri gjenbruk en setning du har brukt i runden. Lista over
+  kommentarene du har gitt, ligger nederst i oppgaven.
+- Hold deg unna oppramsing av det som allerede står på skjermen.
+
+Mønstrene nedenfor er de samme reservetekstene, skrevet av laget. De viser spennet du holder deg
+innenfor — men det er utgangspunktet i oppgaven som gjelder for dette svaret:
 
 Nivå 0 (rolig):
 
@@ -61,7 +71,7 @@ FORMAT-KRAV:
 Du MÅ svare i gyldig JSON med følgende nøkkel, og ingenting annet — ingen bevisfoto, ingen
 bildetekst, ingen fritekst utenfor JSON:
 {
-  "kommentar": "Din Bjarne-kommentar til svaret (én til to setninger, som mønsteret over)"
+  "kommentar": "Utgangspunktet ovenfor, nesten ordrett, tilpasset dette spørsmålet"
 }`;
 
 /** Nøkkelen som faktisk betyr noe: kommentaren. Bevisfoto er fjernet fra oppgaven. */
@@ -157,13 +167,30 @@ function velgReservekommentar(
 
   const start = trusselnivå <= 25 ? 0 : trusselnivå <= 50 ? 1 : trusselnivå <= 75 ? 2 : 3;
   const bånd = [25, 50, 75, 100];
-  for (let skritt = 0; skritt < bånd.length; skritt++) {
-    const kandidat = hentFallbackKommentar(bånd[(start + skritt) % bånd.length], varRiktig);
+  const rekkefølge = Array.from({ length: bånd.length }, (_, i) => bånd[(start + i) % bånd.length]);
+
+  for (const nivå of rekkefølge) {
+    const kandidat = hentFallbackKommentar(nivå, varRiktig);
     if (!erBrukt(kandidat, tidligere)) {
       return kandidat;
     }
   }
-  return hentFallbackKommentar(trusselnivå, varRiktig);
+
+  // Alle fire er brukt — en runde har fem spørsmål. Ta den som ble brukt tidligst i runden,
+  // slik at gjentakelsen kommer lengst mulig unna første gang den ble sagt.
+  let tidligstTekst = hentFallbackKommentar(trusselnivå, varRiktig);
+  let tidligstPlass = tidligere.findIndex((tekst) => normaliser(tekst) === normaliser(tidligstTekst));
+  if (tidligstPlass < 0) tidligstPlass = Number.MAX_SAFE_INTEGER;
+
+  for (const nivå of rekkefølge) {
+    const kandidat = hentFallbackKommentar(nivå, varRiktig);
+    const plass = tidligere.findIndex((tekst) => normaliser(tekst) === normaliser(kandidat));
+    if (plass >= 0 && plass < tidligstPlass) {
+      tidligstTekst = kandidat;
+      tidligstPlass = plass;
+    }
+  }
+  return tidligstTekst;
 }
 
 export async function genererBjarneKommentar(params: GenererKommentarParams): Promise<string> {
@@ -179,38 +206,41 @@ export async function genererBjarneKommentar(params: GenererKommentarParams): Pr
   const riktigTekst = riktigAlternativ ? riktigAlternativ.tekst : "Ukjent fasit";
   const tilstand = hentTrusselnivåTilstand(trusselnivå);
 
-  const input = `${spørsmål.historie ? `Skadesaken spilleren fikk: ${spørsmål.historie}\n` : ""}Spørsmål: ${spørsmål.tekst}
+  // Reserveteksten som gjelder dette nivået og utfallet — roterer bort fra alt som er brukt.
+  const utgangspunkt = velgReservekommentar(trusselnivå, varRiktig, tidligere, tidsavbrudd);
+
+  const lagInput = (grunnlag: string) => `${spørsmål.historie ? `Skadesaken spilleren fikk: ${spørsmål.historie}\n` : ""}Spørsmål: ${spørsmål.tekst}
 Spillerens valgte svar: ${valgtTekst}
 Resultat: ${tidsavbrudd ? "FEIL/GALT (Tidsavbrudd - tiden gikk ut)" : (varRiktig ? "RIKTIG" : "FEIL/GALT")}
 Fasit / Riktig svar: ${riktigTekst}
 Kilde i vilkårene: ${spørsmål.kilde}
-Spillerens trusselnivå etter svaret: ${trusselnivå} (Tilstand: ${tilstand})${
-  tidligere.length > 0
-    ? `
+Spillerens trusselnivå etter svaret: ${trusselnivå} (Tilstand: ${tilstand})
+
+UTGANGSPUNKT — lagets ferdige reservetekst for dette svaret. Kommentaren din skal være denne,
+nesten ordrett:
+«${grunnlag}»${tidligere.length > 0 ? `
 
 Kommentarer du allerede har gitt i denne runden — ingen av dem kan brukes igjen, verbatim eller nesten:
-${tidligere.map((tekst, i) => `${i + 1}. ${tekst}`).join("\n")}`
-    : ""
-}
-
+${tidligere.map((tekst, i) => `${i + 1}. ${tekst}`).join("\n")}` : ""}
 Vennligst gi din kommentar som Bjarne i det påkrevde JSON-formatet {"kommentar": "..."}.`;
 
   try {
     const første = parseBjarneKommentar(
-      await genererSvarFraGateway({ instructions: BJARNE_SYSTEM_PROMPT, input })
+      await genererSvarFraGateway({ instructions: BJARNE_SYSTEM_PROMPT, input: lagInput(utgangspunkt) })
     );
 
     if (!erBrukt(første, tidligere)) {
       return første;
     }
 
-    // Han gjentok seg. Vi ber ham én gang til, med avtalebruddet skrevet rett ut.
+    // Han gjentok seg. Nytt utgangspunkt, og avtalebruddet skrevet rett ut.
+    const nyttUtgangspunkt = velgReservekommentar(trusselnivå, varRiktig, [...tidligere, første], tidsavbrudd);
     const påNytt = parseBjarneKommentar(
       await genererSvarFraGateway({
         instructions: BJARNE_SYSTEM_PROMPT,
-        input: `${input}
+        input: `${lagInput(nyttUtgangspunkt)}
 
-Du leverte nettopp «${første}», som er en gjentakelse av noe du har sagt før. Skriv en helt annen kommentar.`
+Du leverte nettopp «${første}», som er en gjentakelse av noe du har sagt før. Bruk det nye utgangspunktet.`
       })
     );
 
