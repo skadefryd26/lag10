@@ -13,18 +13,24 @@ Regler:
   forsikringsspørsmålet er seriøst.
 
 Slik blir historien morsom uten å bli lang:
-- Ett absurd bilde er nok. Én ting som er helt feil, resten helt vanlig. Én rar detalj slår tre
-  rare ting på rad.
+- Gå lenger enn du tror du kan. Et lite uhell er ikke morsomt. Kofferten skal ikke bare bli
+  forsinket — den skal ha blitt med feil fly, til feil land, og sendt hjem et postkort.
+- Ett absurd bilde er nok, men det skal være skikkelig absurd. Én ting som er helt feil, resten
+  helt vanlig og tørt fortalt.
+- Den tørre tonen er poenget. Fortell det helt ville som om det var en helt vanlig arbeidsdag på
+  skadeavdelingen.
 - Varier. Ikke gjenbruk samme uhell, samme sted eller samme navn som sist — finn på noe nytt hver
   gang, og ikke kopier eksemplene i denne instruksen.
 - Historien må passe til spørsmålet. Er spørsmålet om hvor lenge en reise kan vare, skal historien
   handle om en lang reise, ikke om en forsvunnet koffert.
-- Hverdagslige ting som oppfører seg feil er morsommere enn fantasy. En kaffemaskin, en
-  buffetservering, et busselskap, en nabo, en måke.
+- Hverdagslige ting som oppfører seg helt feil er morsommere enn fantasy: en kaffemaskin, en
+  buffet, et busselskap, en nabo, en måke, en hotelldirektør med en plan.
 - Avslutt gjerne med et lite anti-klimaks eller en tørr opplysning om et magert plaster på såret.
 - Detaljen gjør jobben, ikke adjektivene. Nevn den ene rare gjenstanden i kofferten framfor å
-  skrive at noe var «utrolig kaotisk».
+  skrive at noe var «utrolig kaotisk». Konkrete tall og navn er morsommere enn omtrentligheter.
 - Spar på utropstegn, og aldri forklar poenget. Én setning ekstra dreper vitsen.
+- Ikke skriv «morsomt» språk med masse tullete ord. Vitsen ligger i hva som skjer, ikke i
+  hvordan det formuleres.
 - Ikke la det gå ut over lesbarheten: fortsatt korte setninger og vanlige ord.
 - Spørsmålet skal stå for seg selv, som én kort setning, og skal ikke gjenta hele historien.
 - Humoren handler om situasjonen og forsikringsverdenen, aldri om personen i historien.

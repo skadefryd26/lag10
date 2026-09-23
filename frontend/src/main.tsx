@@ -6,6 +6,7 @@ import { MantineProvider } from "@mantine/core";
 import { theme } from "./theme.js";
 import { QuizPage } from "./features/quiz/routes/QuizRoute.js";
 import "./index.css";
+import "./neon-pub.css";
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />
