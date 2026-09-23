@@ -507,6 +507,18 @@ button[data-alternativ]:disabled {
   box-shadow: 0 6px 15px rgba(31, 42, 68, 0.07) !important;
 }
 
+.quiz-main-column .quiz-options,
+.quiz-main-column [data-alternativer] {
+  display: flex !important;
+  flex-direction: column !important;
+  grid-template-columns: 1fr !important;
+  gap: 12px !important;
+}
+
+.quiz-main-column [data-alternativ] {
+  width: 100% !important;
+}
+
 .quiz-main-column [data-alternativ]:hover:not(:disabled) {
   border-color: #ff4d6d !important;
   background: #fff5f7 !important;

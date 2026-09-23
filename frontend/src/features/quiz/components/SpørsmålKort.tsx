@@ -111,6 +111,7 @@ export const SpørsmålKort: React.FC<Props> = ({
 
       {/* 2x2 Answer Control Pads */}
       <Box
+        className="quiz-options"
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
