@@ -1,0 +1,148 @@
+/*
+ * Neon pub quiz: murvegg, neonskilt og glødende spørsmålstegn.
+ * Løst inspirert av en «quiz night»-plakat. Alt er tegnet med CSS, ingen bilder er kopiert.
+ * Lastes etter index.css og overstyrer bare utseendet, ikke oppførselen.
+ */
+
+:root {
+  --neon-pink: #ff2e88;
+  --neon-cyan: #22e4ff;
+  --neon-yellow: #ffe45c;
+  --brick: #5a2a22;
+  --brick-dark: #3b1a15;
+  --mortar: #1a0e0c;
+}
+
+/* Murvegg: forskjøvne murstein tegnet som en liten SVG-flis, med rosa lys og mørk vignett. */
+.quiz-scene {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--mortar) !important;
+  background-image:
+    radial-gradient(ellipse at 50% 25%, rgba(255, 46, 136, 0.22) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0, 0, 0, 0.8) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='88'%3E%3Crect width='120' height='88' fill='%231a0e0c'/%3E%3Crect x='2' y='2' width='116' height='40' rx='2' fill='%235a2a22'/%3E%3Crect x='-60' y='46' width='116' height='40' rx='2' fill='%234e241d'/%3E%3Crect x='62' y='46' width='116' height='40' rx='2' fill='%234e241d'/%3E%3C/svg%3E") !important;
+  background-size: 100% 100%, 100% 100%, 120px 88px !important;
+}
+
+/* Glødende spørsmålstegn på veggen. */
+.quiz-scene::after {
+  content: "?";
+  position: absolute;
+  top: 6%;
+  right: 5%;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(6rem, 14vw, 12rem);
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-shadow:
+    0 0 6px #fff,
+    0 0 14px var(--neon-cyan),
+    0 0 32px var(--neon-cyan),
+    0 0 64px var(--neon-cyan);
+  transform: rotate(12deg);
+  opacity: 0.85;
+  pointer-events: none;
+  animation: neonFlicker 6s infinite;
+}
+
+.quiz-shell {
+  position: relative;
+  z-index: 1;
+}
+
+.quiz-shell::before {
+  content: "?";
+  position: absolute;
+  top: 40%;
+  left: -70px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 7rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow:
+    0 0 6px #fff,
+    0 0 14px var(--neon-yellow),
+    0 0 32px var(--neon-yellow);
+  transform: rotate(-14deg);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Neonskiltet: tittelen lyser rosa. */
+.quiz-title {
+  color: #fff !important;
+  letter-spacing: 0.02em !important;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 4px #fff,
+    0 0 10px var(--neon-pink),
+    0 0 22px var(--neon-pink),
+    0 0 44px var(--neon-pink),
+    0 0 80px var(--neon-pink) !important;
+  animation: neonFlicker 8s infinite;
+}
+
+.eyebrow {
+  color: var(--neon-cyan) !important;
+  text-shadow: 0 0 6px var(--neon-cyan), 0 0 16px var(--neon-cyan);
+}
+
+.quiz-subtitle {
+  color: #ffe9f3 !important;
+}
+
+/* Chips og nedtelling får neonkant, som rør rundt et skilt. */
+.streak-chip,
+.threat-chip {
+  border: 2px solid var(--neon-yellow) !important;
+  background: rgba(10, 5, 5, 0.7) !important;
+  box-shadow: 0 0 10px rgba(255, 228, 92, 0.55), inset 0 0 8px rgba(255, 228, 92, 0.25);
+}
+
+.header-timer > div {
+  border: 2px solid var(--neon-cyan) !important;
+  background: rgba(10, 5, 5, 0.75) !important;
+  box-shadow: 0 0 12px rgba(34, 228, 255, 0.6), inset 0 0 10px rgba(34, 228, 255, 0.2) !important;
+}
+
+/* Spørsmålskortet er en tavle som henger på veggen, med rosa neonkant. */
+.quiz-main-column .corner-brackets {
+  border: 3px solid var(--neon-pink) !important;
+  box-shadow:
+    0 0 14px rgba(255, 46, 136, 0.7),
+    0 0 40px rgba(255, 46, 136, 0.35),
+    0 18px 44px rgba(0, 0, 0, 0.6) !important;
+}
+
+.quiz-main-column [data-alternativ]:hover:not(:disabled) {
+  border-color: var(--neon-pink) !important;
+  box-shadow: 0 0 14px rgba(255, 46, 136, 0.45) !important;
+}
+
+.threat-mini {
+  background: rgba(10, 5, 5, 0.75) !important;
+  border: 1px solid rgba(34, 228, 255, 0.5);
+}
+
+.sidekick-line {
+  color: #ffe9f3 !important;
+}
+
+@keyframes neonFlicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.45; }
+}
+
+@media (max-width: 760px) {
+  .quiz-shell::before { display: none; }
+  .quiz-scene::after { font-size: 5rem; top: 2%; right: 3%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-title,
+  .quiz-scene::after {
+    animation: none !important;
+  }
+}
