@@ -32,7 +32,13 @@ export const SpørsmålKort: React.FC<Props> = ({
       }}
     >
       <Stack gap="lg">
-        <Text size="xl" fw={700} style={{ color: "#f8fafc", lineHeight: 1.4 }}>
+        {spørsmål.historie && (
+          <Text size="md" style={{ color: "#e2e8f0", lineHeight: 1.65 }}>
+            {spørsmål.historie}
+          </Text>
+        )}
+
+        <Text size="xl" fw={700} style={{ color: "#f8fafc", lineHeight: 1.45 }}>
           {spørsmål.tekst}
         </Text>
 

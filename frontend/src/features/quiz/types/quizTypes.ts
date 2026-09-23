@@ -1,6 +1,8 @@
 export type Spørsmål = {
   id: string;
   tekst: string;
+  /** Oppdiktet skadehistorie som leder opp til spørsmålet. */
+  historie?: string;
   alternativer: { id: string; tekst: string }[];
 };
 

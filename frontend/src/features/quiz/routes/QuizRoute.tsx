@@ -82,7 +82,7 @@ export const QuizPage: React.FC = () => {
 
         {isQuestionLoading && (
           <Box p="xl" style={{ textAlign: "center" }}>
-            <Text c="dimmed">Henter neste spørsmål fra vilkårene…</Text>
+            <Text c="dimmed">Bjarne dikter opp en ny skadesak… *sukk*</Text>
           </Box>
         )}
 

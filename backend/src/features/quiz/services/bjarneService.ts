@@ -68,7 +68,7 @@ export async function genererBjarneKommentar(params: GenererKommentarParams): Pr
   const riktigTekst = riktigAlternativ ? riktigAlternativ.tekst : "Ukjent fasit";
   const tilstand = hentTrusselnivåTilstand(trusselnivå);
 
-  const input = `Spørsmål: ${spørsmål.tekst}
+  const input = `${spørsmål.historie ? `Skadesaken spilleren fikk: ${spørsmål.historie}\n` : ""}Spørsmål: ${spørsmål.tekst}
 Spillerens valgte svar: ${valgtTekst}
 Resultat: ${varRiktig ? "RIKTIG" : "FEIL/GALT"}
 Fasit / Riktig svar: ${riktigTekst}
