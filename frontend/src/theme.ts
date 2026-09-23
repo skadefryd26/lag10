@@ -5,22 +5,24 @@ export const theme = createTheme({
   headings: {
     fontFamily: "'Space Grotesk', sans-serif"
   },
-  primaryColor: "amber",
+  defaultRadius: "xl",
+  primaryColor: "blue",
   colors: {
-    amber: [
-      "#fffbeb",
-      "#fef3c7",
-      "#fde68a",
-      "#fcd34d",
-      "#fbbf24",
-      "#f59e0b",
-      "#d97706",
-      "#b45309",
-      "#92400e",
-      "#78350f"
+    blue: [
+      "#eef2ff",
+      "#e0e7ff",
+      "#c7d2fe",
+      "#a5b4fc",
+      "#818cf8",
+      "#5b6bf0",
+      "#4c6fef",
+      "#3b8ef0",
+      "#312e81",
+      "#1e1b4b"
     ]
   },
   shadows: {
-    md: "0 4px 20px rgba(0, 0, 0, 0.4)"
+    md: "0 10px 30px rgba(31, 42, 68, 0.14)",
+    lg: "0 14px 36px rgba(31, 42, 68, 0.18)"
   }
 });
