@@ -4,6 +4,7 @@ import { Box, Group, Stack, Text } from "@mantine/core";
 type Props = {
   tidGjenstår: number;
   totalTid?: number;
+  aktiv?: boolean;
 };
 
 const BJARNE_UTÅLMODIG_MELDINGER = [
@@ -17,7 +18,7 @@ const BJARNE_UTÅLMODIG_MELDINGER = [
   "Bjarne sinnet koker langsomt opp…"
 ];
 
-export const Nedtelling: React.FC<Props> = ({ tidGjenstår, totalTid = 20 }) => {
+export const Nedtelling: React.FC<Props> = ({ tidGjenstår, totalTid = 20, aktiv = true }) => {
   const bruktTid = totalTid - tidGjenstår;
   const meldingIndeks = Math.min(
     Math.floor(bruktTid / 5),
@@ -103,7 +104,7 @@ export const Nedtelling: React.FC<Props> = ({ tidGjenstår, totalTid = 20 }) => 
 
           <Stack gap={0} style={{ overflow: "hidden", minWidth: 0 }}>
             <Text size="xs" fw={800} style={{ color: farge, letterSpacing: "1px", textTransform: "uppercase", fontSize: "0.65rem" }}>
-              NEDTELLING — {tidGjenstår}S
+              {aktiv ? `NEDTELLING — ${tidGjenstår}S` : tidGjenstår <= 0 ? "TIDEN ER UTE" : "PAUSE"}
             </Text>
             <Text
               size="xs"
@@ -140,4 +141,3 @@ export const Nedtelling: React.FC<Props> = ({ tidGjenstår, totalTid = 20 }) => 
     </Box>
   );
 };
-

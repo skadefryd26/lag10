@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Box, Alert, Text, Group, Title } from "@mantine/core";
 import { hentNesteSpørsmål, sendSvar } from "../api/quizApi.js";
 import type { SvarResponse } from "../types/quizTypes.js";
-import { hentTilstand } from "../components/Trusselmåler.js";
+import { hentTilstand, Trusselmåler } from "../components/Trusselmåler.js";
 import { SpørsmålKort } from "../components/SpørsmålKort.js";
 import { Nedtelling } from "../components/Nedtelling.js";
 import { BjarneAvatar } from "../components/BjarneAvatar.js";
@@ -111,16 +111,22 @@ export const QuizPage: React.FC = () => {
             <Text className="eyebrow">BJARNE LIVE</Text>
             <Title order={1} className="quiz-title">Vilkårsduellen</Title>
             <Text className="quiz-subtitle">Svar før Bjarne rekker å forklare hvorfor han har rett.</Text>
-          </Box>
-          <Group gap="sm" className="header-stats">
-            <Box className="streak-chip"><span>🔥</span> {streak} på rad</Box>
-            <Box className="threat-chip"><span className="live-dot" /> Bjarne: {tilstand}</Box>
-          </Group>
-          {isTimerActive && (
-            <Box className="header-timer">
-              <Nedtelling tidGjenstår={tidGjenstår} totalTid={20} />
+            <Box className="bjarne-meter-stack" aria-label="Bjarne og kaffebehov">
+              <Group className="bjarne-status-row" align="center" gap="md">
+                <BjarneAvatar tilstand={tilstand} nivå={trusselnivå} />
+                <Group gap="sm" className="bjarne-status-chips">
+                  <Box className="streak-chip"><span>🔥</span> {streak} på rad</Box>
+                  <Box className="threat-chip"><span className="live-dot" /> Bjarne: {tilstand}</Box>
+                </Group>
+              </Group>
+              <Trusselmåler trusselnivå={trusselnivå} />
+              {spørsmål && !isQuestionLoading && (
+                <Box className="header-timer header-timer-under-meter">
+                  <Nedtelling tidGjenstår={tidGjenstår} totalTid={20} aktiv={isTimerActive} />
+                </Box>
+              )}
             </Box>
-          )}
+          </Box>
         </header>
 
         <Box className="play-area">
@@ -139,9 +145,6 @@ export const QuizPage: React.FC = () => {
             )}
           </Box>
 
-          <Box className="bjarne-sidekick" aria-label="Bjarne">
-            <BjarneAvatar tilstand={tilstand} nivå={trusselnivå} />
-          </Box>
         </Box>
       </Box>
     </Box>
